@@ -206,7 +206,10 @@ def main():
         bb = "0"*(8+(3-len(code))-len(str(b))) + str(b)
         if len( code+bb ) == 11:
             info = q.query( code + bb)
-            open("result.log", "a").write( json.dumps(info) + "\n" )
+            if info == None:
+                open("no_response.log", "a").write( str(time.time()) + "\t" + code+bb + "\n" )
+            else:
+                open("result.log", "a").write( json.dumps(info) + "\n" )
         else:
             print "手机号码长度错误"
             open("error.log", "a").write( str(time.time()) + "\t" +code + "\t" + bb + "\t长度错误")
