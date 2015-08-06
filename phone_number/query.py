@@ -18,59 +18,61 @@ import requests
 # 14号段为上网卡专属号段， 中国联通上网卡号段为145，中国移动上网卡号段为147。
 # 170号段为虚拟运营商专属号段，170号段的 11 位手机号中前四位用来区分基础运营商，“1700” 为中国电信的转售号码标识，“1705” 为中国移动，“1709” 为中国联通。
 
+# 对于 手机号段当中的 网络制式(GSM/WCDMA/CDMA/TD-SCDMA)，其实没多大作用，因为目前运营商并不限制 某个号段只能使用 某个网络制式,
+# 所以这意味着 只要你的手机是支持该网络制式的，那么只要你开通了相关的网络套餐，基本上，2G/3G/4G 你都是可以使用的。
 NET_CODE = {
     # 中国移动
-    1340: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1341: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1342: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1343: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1344: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1345: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1346: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1347: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    1348: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    135:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    136:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    137:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    138:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    139:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
+    1340: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1341: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1342: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1343: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1344: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1345: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1346: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1347: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    1348: { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    135:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    136:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    137:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    138:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    139:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
     ## 上网卡
-    147:  { "operator": "中国移动", "network": "TD-SCDMA/GSM", "Subscriber Identity Module": "USIM/SIM", "function": "数据卡", "descp": "中国移动香港一卡两号储值卡内地号码" },
-    150:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    151:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    152:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    157:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "function": "无线固话卡" },
-    158:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    159:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    178:  { "operator": "中国移动", "network": "TD-LTE", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    182:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    183:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    184:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    187:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    188:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "function": "手机卡" },
+    147:  { "operator": "中国移动", "network": "TD-SCDMA/GSM", "Subscriber Identity Module": "USIM/SIM", "functions": "数据卡", "descp": "中国移动香港一卡两号储值卡内地号码" },
+    150:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    151:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    152:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    157:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "functions": "无线固话卡" },
+    158:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    159:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    178:  { "operator": "中国移动", "network": "TD-LTE", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    182:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    183:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    184:  { "operator": "中国移动", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    187:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    188:  { "operator": "中国移动", "network": "TD-SCDMA", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
     # 中国联通
-    130:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    131:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    132:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
+    130:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    131:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    132:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
     ## 上网卡
-    145:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "function": "数据卡" },
-    155:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "function": "手机卡" },
-    156:  { "operator": "中国联通", "network": "GSM/WCDMA", "Subscriber Identity Module": "SIM", "function": "手机卡", "descp": "中港一卡两号(3G)" },
-    176:  { "operator": "中国联通", "network": "FDD-LTE/TD-LTE", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    185:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    186:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "function": "手机卡" },
+    145:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "functions": "数据卡" },
+    155:  { "operator": "中国联通", "network": "GSM", "Subscriber Identity Module": "SIM", "functions": "手机卡" },
+    156:  { "operator": "中国联通", "network": "GSM/WCDMA", "Subscriber Identity Module": "SIM", "functions": "手机卡", "descp": "中港一卡两号(3G)" },
+    176:  { "operator": "中国联通", "network": "FDD-LTE/TD-LTE", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    185:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    186:  { "operator": "中国联通", "network": "WCDMA", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
     # 中国电信
-    133:  { "operator": "中国电信", "network": "CDMA", "Subscriber Identity Module": "UIM", "function": "手机卡" },
-    1349: { "operator": "中国电信", "network": "卫星", "Subscriber Identity Module": "unknow", "function": "手机卡" },
-    153:  { "operator": "中国电信", "network": "CDMA", "Subscriber Identity Module": "UIM", "function": "手机卡" },
-    177:  { "operator": "中国电信", "network": "FDD-LTE/TD-LTE", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    180:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "function": "手机卡" },
-    181:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "function": "手机卡" },
-    189:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "function": "手机卡" },
+    133:  { "operator": "中国电信", "network": "CDMA", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
+    1349: { "operator": "中国电信", "network": "卫星", "Subscriber Identity Module": "unknow", "functions": "手机卡" },
+    153:  { "operator": "中国电信", "network": "CDMA", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
+    177:  { "operator": "中国电信", "network": "FDD-LTE/TD-LTE", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    180:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
+    181:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
+    189:  { "operator": "中国电信", "network": "CDMA2000", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
     # 虚拟运营商
-    1700:  { "operator": "中国电信", "network": "unknow", "Subscriber Identity Module": "UIM", "function": "手机卡" },
-    1705:  { "operator": "中国移动", "network": "unknow", "Subscriber Identity Module": "USIM", "function": "手机卡" },
-    1709:  { "operator": "中国联通", "network": "unknow", "Subscriber Identity Module": "USIM", "function": "手机卡" },
+    1700:  { "operator": "中国电信", "network": "unknow", "Subscriber Identity Module": "UIM", "functions": "手机卡" },
+    1705:  { "operator": "中国移动", "network": "unknow", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
+    1709:  { "operator": "中国联通", "network": "unknow", "Subscriber Identity Module": "USIM", "functions": "手机卡" },
 
 }
 
@@ -144,7 +146,7 @@ class ChinaUnicom:
         }
         """
         print u"searchIndex: %s" % result['searchIndex']
-        
+
         if "dto" in result and result['dto'] != None:
             #print result['dto']
             for k in result['dto']:
