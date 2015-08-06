@@ -14,7 +14,7 @@ OpenData ( 开放的公共数据 )
 
 维基百科: https://zh.wikipedia.org/wiki/中国内地移动终端通讯号码
 
-手机卡号
+号码编码
 ^^^^^^^^^^
 
 中国内地手机卡号以1开头，共11位数，前7位数字通常称为手机号段。
@@ -43,7 +43,7 @@ OpenData ( 开放的公共数据 )
 2.  “H0H1H2H3”是数字移动电话客户入网地的地区识别码。如：“0800、0801”代表入网地是四川成都地区。
 3.  ABCD是具体客户号。如某客户的数字移动电话号码为 1390800ABCD，表明该客户是中国移动通信数字移动电话网的成都业务区内客户号为ABCD的客户。详细情况请以当地移动营业厅或10086客户服务电话的最新公告为准。
 
-号码分配
+号段分配
 ^^^^^^^^^^
 
 中国移动
@@ -132,3 +132,55 @@ OpenData ( 开放的公共数据 )
 
 170号段为虚拟运营商专属号段，170号段的 11 位手机号中前四位用来区分基础运营商，
 “1700” 为中国电信的转售号码标识，“1705” 为中国移动，“1709” 为中国联通。
+
+
+号码归属地查询
+^^^^^^^^^^^^^^^^
+
+参见 上面的 `号码编码` 一节, 手机号码中的第4~7位数表示地区号码(YYYY)。
+
+2010年11月之前，一般可以从手机号段直接区分城市归属地和运营商。
+
+2010年11月，“携号转网”政策在部分地区开始试行，对于成功进行携号转网的用户，
+手机号段不再能体现其当前所属运营商。
+
+对此，三大通信运营商(电信/联通/移动)都在其官网提供了 号码归属地查询服务。
+
+*   `中国移动提供的号码归属地检索服务 <http://www.10086.cn/support/selfservice/ownership/>`_
+*   `中国联通提供的号码归属地检索服务 <http://iservice.10010.com/e3/service/service_belong.html?menuId=000400010003>`_
+*   `中国电信提供的号码归属地检索服务 <http://ah.189.cn/support/common/>`_
+
+**中国联通网络检索示例**
+
+.. code:: bash
+
+    curl -X POST -d "number=18602730949&checkCode=null" "http://iservice.10010.com/e3/static/life/callerLocationQuery?_=1438767945817"
+
+**中国移动网络检索示例**
+    
+.. code:: python
+    
+    import requests
+    import json
+    import re
+    import random
+
+    # 会话
+    s = requests.Session()
+    # 获取验证码
+    r = s.get("http://www1.10086.cn/jsp/common/image.jsp?r=0.7038094939198345")
+    open("verify.jpg", "wb").write(r.content)
+    verify_code = "17d688"  # 自己打开 image 图片看哦
+
+    url = "http://www1.10086.cn/service/shop/attributionwithcode.jsp"
+    phone_number = 18602730949
+
+    payload = {"pn": phone_number, "verify": verify_code, "callback": "jsoncallback", "_": random.random() }
+    r = s.get( url, params=payload, headers=headers );
+    body = re.compile(r"jsoncallback\(\n(.*?)\n\)", re.DOTALL).findall(r.text)[0]
+    result = json.loads(body)
+    print result
+
+
+截至2015/05/06为止, 中国联通提供的查询服务只可以查询联通运营的号段归属地。
+中国移动提供了所有号码的查询服务(但是需要输入验证码)。中国电信的页面似乎存在BUG, 查询接口无法工作( :-( )。
