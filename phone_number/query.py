@@ -3,7 +3,7 @@
 
 import random
 import re, json
-import requests, urllib
+import requests
 """
 
 官方 查询接口:
@@ -143,6 +143,8 @@ class ChinaUnicom:
             }
         }
         """
+        print u"searchIndex: %s" % result['searchIndex']
+        
         if "dto" in result and result['dto'] != None:
             #print result['dto']
             for k in result['dto']:
@@ -163,8 +165,8 @@ class ChinaTelecom:
 
 
 def main():
-    # q = ChinaMobile()
-    q = ChinaUnicom()
+    q = ChinaMobile()
+    # q = ChinaUnicom()
     q.query("18602730947")
     q.query("15391565549")
 
