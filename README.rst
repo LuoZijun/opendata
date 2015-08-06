@@ -176,10 +176,13 @@ OpenData ( 开放的公共数据 )
     phone_number = 18602730949
 
     payload = {"pn": phone_number, "verify": verify_code, "callback": "jsoncallback", "_": random.random() }
-    r = s.get( url, params=payload, headers=headers );
+    r = s.get( url, params=payload );
     body = re.compile(r"jsoncallback\(\n(.*?)\n\)", re.DOTALL).findall(r.text)[0]
     result = json.loads(body)
     print result
+    for k in result:
+        print "%s: %s" % ( str(k), str(result[k]) )
+    
 
 
 截至2015/05/06为止, 中国联通提供的查询服务只可以查询联通运营的号段归属地。
