@@ -13,6 +13,50 @@ import requests, urllib
 
 """
 
+CompanyCode = {
+    "ChinaMobile": [
+        1340, 1341, 1342, 1343, 1344, 1345 ,1346, 1347, 1348,  # GSM SIM手机卡
+        135, 136, 137, 138, 139, # GSM SIM手机卡
+        147, # TD-SCDMA/GSM    USIM/SIM数据卡 / 中国移动香港一卡两号储值卡内地号码
+        150, 151, 152, 157, 158, 159, # GSM SIM手机卡 ( 157 为 TD-SCDMA    USIM无线固话卡 )
+        178, # TD-LTE  USIM手机卡
+        182, 183, 184, 187, 188  # GSM SIM手机卡 (  187 & 188 为 TD-SCDMA    USIM手机卡 )
+    ],
+    "ChinaUnicom": [
+        130, 131, 132, # GSM SIM手机卡
+        145,   # WCDMA   USIM数据卡
+        155, 156,  # 155: GSM SIM手机卡,  156: GSM/WCDMA   SIM手机卡/中港一卡两号(3G)
+        176,  # FDD-LTE/TD-LTE  USIM手机卡
+        185, 186 # WCDMA   USIM手机卡
+    ],
+    "ChinaTelecom": [
+        133,     # CDMA    UIM手机卡
+        1349,   # 卫星手机卡
+        153,     # CDMA    UIM手机卡
+        177,     # FDD-LTE/TD-LTE  USIM手机卡
+        180, 181, 189 # CDMA2000    UIM手机卡
+    ],
+    "NetCard": [ 14 ],  # 14号段为上网卡专属号段， 中国联通上网卡号段为145，中国移动上网卡号段为147。
+    "VirtualCompany": [170]
+}
+
+# 14号段为上网卡专属号段， 中国联通上网卡号段为145，中国移动上网卡号段为147。
+NetCard = {
+    "ChinaUnicom": [145],
+    "ChinaMobile": [147]
+}
+
+# 170号段为虚拟运营商专属号段，170号段的 11 位手机号中前四位用来区分基础运营商，
+#  “1700” 为中国电信的转售号码标识，“1705” 为中国移动，“1709” 为中国联通。
+VirtualCompany = {
+    "ChinaTelecom": [ 1700 ],   # UIM手机卡
+    "ChinaMobile": [1705],        # USIM手机卡
+    "ChinaUnicom": [1709],       # USIM手机卡
+}
+
+def where_are_you_from (phone_number):
+    # 判断 手机号码 所属的运营商
+    pass
 
 class ChinaMobile:
     "检索中国移动网络"
@@ -45,7 +89,7 @@ class ChinaMobile:
         #print result
         for k in result:
             print "%s: %s" % ( k, result[k] )
-        
+
 
 class ChinaUnicom:
     "检索中国联通网络"
@@ -57,7 +101,6 @@ class ChinaUnicom:
         self.requests = requests.Session()
     def query(self, phone_number):
         print "========检索联通数据库: %s =========" % str(phone_number)
-
         url = "http://iservice.10010.com/e3/static/life/callerLocationQuery?_=" + str(random.random())
         data = {"number": phone_number, "checkCode": self.verify_code}
         r = self.requests.post( url, data=data )
@@ -97,7 +140,6 @@ class ChinaTelecom:
         self.requests = requests.Session()
     def query(self, phone_number):
         url = "http://ah.189.cn/support/common/"
-
 
 
 def main():
