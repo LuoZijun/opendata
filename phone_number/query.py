@@ -220,9 +220,8 @@ def query(mobile_id):
 
 query('18516540691')
 query('18702159534')
+"""
 
-
-""""
 def main():
     q = ChinaMobile()
     # q = ChinaUnicom()
