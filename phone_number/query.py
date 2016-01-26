@@ -196,7 +196,33 @@ class ChinaTelecom:
     def query(self, phone_number):
         url = "http://ah.189.cn/support/common/"
 
+"""
+import requests, re
+try:
+    from bs4 import BeautifulSoup
+except:
+    from BeautifulSoup import BeautifulSoup
 
+
+def query(mobile_id):
+	print u"Query: %s 运营商: 联通" % str(mobile_id)
+	url = "http://wap.10010.com/t/customerService/queryAffiliationPlace.htm?desmobile=&version="
+	payload = {"mobile_id": str(mobile_id) }
+	r = requests.post(url, data=payload)
+	if r.status_code != 200:
+		print u"ERROR \t %s " % mobile_id
+	DOM = BeautifulSoup(r.content, 'html.parser')
+	if len(DOM.find_all('td')) == 0:
+		print u"\tWARN: 数据不存在."
+		return False
+	values = map(lambda elem: unicode(elem.find('span').get_text()), DOM.find_all('td'))
+	print '\tResult: ' + '\t'.join(values) + '\n'
+
+query('18516540691')
+query('18702159534')
+
+
+""""
 def main():
     q = ChinaMobile()
     # q = ChinaUnicom()
