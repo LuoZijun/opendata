@@ -1,30 +1,23 @@
 #!/usr/bin/env python
 #coding: utf8
 
-import random
-import re, json
+import os,sys,time,random,json,re
 import requests
-import sqlite3
-import time
+from bs4 import BeautifulSoup
+from pymongo import MongoClient
+
+client = MongoClient('localhost', 27017)
+db     = client.mobile
 
 """
 
 官方 查询接口:
     移动: http://www.10086.cn/support/selfservice/ownership/
     联通: http://iservice.10010.com/e3/service/service_belong.html?menuId=000400010003
+         http://wap.10010.com/t/customerService/queryAffiliationPlace.htm?desmobile=&version=
     电信: http://ah.189.cn/support/common/
 
 """
-
-conn = sqlite3.connect("data.sqlite3")
-cursor = conn.cursor()
-
-def create_database():
-    cursor.execute("CREATE TABLE phone_number(pn INTEGER PRIMARY KEY UNIQUE,operator TEXT,network TEXT,sim TEXT,functions TEXT,descp TEXT,source TEXT,ctime INTEGER,utime INTEGER) ")
-    conn.commit()
-
-def append(phone_number):
-    pass
 
 # 网号 ( 号段 )
 
@@ -129,13 +122,33 @@ class ChinaMobile:
             info = {
                 "pn": int(result['pn']), 
                 "province_name": result['ProvName'],
-                "city_name": result['CityName']
+                "city_name": result['CityName'],
+                "telpref": result['CityId']
             }
             print str(info)
             return info
         else:
             return None
 
+"""
+def query(mobile_id):
+    print u"Query: %s 运营商: 联通" % str(mobile_id)
+    url = "http://wap.10010.com/t/customerService/queryAffiliationPlace.htm?desmobile=&version="
+    payload = {"mobile_id": str(mobile_id) }
+    r = requests.post(url, data=payload)
+    if r.status_code != 200:
+        print u"ERROR \t %s " % mobile_id
+    DOM = BeautifulSoup(r.content, 'html.parser')
+    if len(DOM.find_all('td')) == 0:
+        print u"\tWARN: 数据不存在."
+        return False
+    values = map(lambda elem: unicode(elem.find('span').get_text()), DOM.find_all('td'))
+    print '\tResult: ' + '\t'.join(values) + '\n'
+
+query('18516540691')
+query('18702159534')
+
+"""
 class ChinaUnicom:
     "检索中国联通网络"
     requests = None
@@ -169,20 +182,17 @@ class ChinaUnicom:
         }
         """
         # print u"searchIndex: %s" % result['searchIndex']
-
         if "dto" in result and result['dto'] != None and int(result['dto']['beginMobile']) == int(phone_number):
-            #print result['dto']
-            #for k in result['dto']:
-            #    print "%s: %s" % ( k, result['dto'][k] )
             info = {
                 "pn": int(result['dto']['beginMobile']), 
                 "province_name": result['dto']['provinceName'],
-                "city_name": result['dto']['cityName']
+                "city_name": result['dto']['cityName'],
+                'telpref': result['dto']['areaCode']
             }
             print str(info)
             return info
         else:
-            # print u"**查询失败."
+            print u"**查询失败."
             return None
 
 class ChinaTelecom:
@@ -196,31 +206,6 @@ class ChinaTelecom:
     def query(self, phone_number):
         url = "http://ah.189.cn/support/common/"
 
-"""
-import requests, re
-try:
-    from bs4 import BeautifulSoup
-except:
-    from BeautifulSoup import BeautifulSoup
-
-
-def query(mobile_id):
-	print u"Query: %s 运营商: 联通" % str(mobile_id)
-	url = "http://wap.10010.com/t/customerService/queryAffiliationPlace.htm?desmobile=&version="
-	payload = {"mobile_id": str(mobile_id) }
-	r = requests.post(url, data=payload)
-	if r.status_code != 200:
-		print u"ERROR \t %s " % mobile_id
-	DOM = BeautifulSoup(r.content, 'html.parser')
-	if len(DOM.find_all('td')) == 0:
-		print u"\tWARN: 数据不存在."
-		return False
-	values = map(lambda elem: unicode(elem.find('span').get_text()), DOM.find_all('td'))
-	print '\tResult: ' + '\t'.join(values) + '\n'
-
-query('18516540691')
-query('18702159534')
-"""
 
 def main():
     q = ChinaMobile()
